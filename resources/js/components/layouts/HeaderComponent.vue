@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1>Cash Carry</h1>
-        <a href="">会員登録する</a>
+        <router-link v-bind:to="{name: 'user.register'}">会員登録</router-link>
     </header>
 </template>
 

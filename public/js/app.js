@@ -28177,20 +28177,19 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", [
+  return _c(
+    "header",
+    [
       _c("h1", [_vm._v("Cash Carry")]),
       _vm._v(" "),
-      _c("a", { attrs: { href: "" } }, [_vm._v("会員登録する")]),
-    ])
-  },
-]
+      _c("router-link", { attrs: { to: { name: "user.register" } } }, [
+        _vm._v("会員登録"),
+      ]),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

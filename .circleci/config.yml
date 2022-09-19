@@ -44,7 +44,8 @@ jobs:
       - run:
           name: deploy
           command: |
-            ssh -o StrictHostKeyChecking=no -t suna@${HOST_NAME} "cd suna2022 && \
+            ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME} "sudo su - suna \
+              cd suna2022 && \
               git pull origin master && \
               composer install -n --no-dev --prefer-dist && \
               php artisan migrate --force && \

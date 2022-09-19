@@ -13,6 +13,6 @@ class LoginControllerTest extends TestCase
     /** @test */
     function ログイン画面が表示される()
     {
-        $this->get(route('login'))->assertOk();
+        $this->get(route('login'))->assertOk()->assertViewIs('auth.login');
     }
 }

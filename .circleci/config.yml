@@ -36,3 +36,29 @@ jobs:
       - run:
           name: php test
           command: php artisan test
+  deploy:
+    docker:
+      - image: cimg/php:8.0.20
+    steps:
+      - add_ssh_keys
+      - run:
+          name: deploy
+          command: |
+            ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd suna2022 && \
+              git pull origin master && \
+              composer install -n --no-dev --prefer-dist && \
+              php artisan migrate --force && \
+              php artisan config:cache"
+
+workflows:
+  version: 3
+  build_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master

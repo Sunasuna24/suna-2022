@@ -11,8 +11,6 @@ class VeryFirstTest extends TestCase
     /** @test */
     public function very_first_test()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $this->get('/')->assertOk();
     }
 }

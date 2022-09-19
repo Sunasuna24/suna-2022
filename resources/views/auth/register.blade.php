@@ -11,7 +11,25 @@
         <h1>投稿サイト</h1>
     </header>
     <main>
-        <p>新規会員登録する。</p>
+        <form action="{{ route('register') }}" method="post">
+            <div>
+                <label for="username">ユーザー名</label>
+                <input type="text" name="username" id="username">
+            </div>
+            <div>
+                <label for="email">メールアドレス</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div>
+                <label for="password">パスワード</label>
+                <input type="password" name="password" id="password">
+            </div>
+            <div>
+                <label for="password_confirmation">(確認)パスワード</label>
+                <input type="password" name="password_confirmation" id="password_confirmation">
+            </div>
+            <button type="submit">送信する</button>
+        </form>
     </main>
     <footer>
         <span>&copy;Tomoyasu Sunagawa 2022.</span>

@@ -13,6 +13,9 @@ class RegisterControllerTest extends TestCase
     /** @test */
     function 会員登録の画面が表示される()
     {
-        $this->get(route('register'))->assertOk()->assertViewIs('auth.register');
+        $this->get(route('register'))
+            ->assertOk()
+            ->assertViewIs('auth.register')
+            ->assertSee('会員登録');
     }
 }

@@ -36,7 +36,7 @@ jobs:
       - run:
           name: php test
           # command: php artisan test
-          command: vendor/bin/phpunit
+          command: vendor/bin/phpunit tests/Feature
   deploy:
     docker:
       - image: cimg/php:8.0.20

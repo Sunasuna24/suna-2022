@@ -14,5 +14,6 @@ class VeryFirstTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
+        $response->assertTrue(false);
     }
 }

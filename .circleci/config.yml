@@ -3,6 +3,19 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.0.20
+      - image: circleci/postgres:11.6-alpine
+        environment:
+          POSTGRES_DB: suna2022
+          POSTGRES_USER: default
+          POSTGRES_PASSWORD: secret
+    environment:
+      APP_ENV: testing
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_DATABASE: suna2022
+      DB_USERNAME: default
+      DB_PASSWORD: secret
     steps:
       - checkout
       - run: sudo composer self-update --1
@@ -13,6 +26,13 @@ jobs:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
+      - run:
+          name: get ready for postgres
+          command: |
+            sudo apt-get update
+            sudo apt-get install libpq-dev
+            sudo docker-php-ext-install pdo_pgsql
+            dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: php test
           command: php artisan test

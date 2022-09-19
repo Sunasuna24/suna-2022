@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.0.20
-      - image: cimg/postgres:11.17-alpine
+      - image: cimg/postgres:11.17
         environment:
           POSTGRES_DB: suna2022
           POSTGRES_USER: default

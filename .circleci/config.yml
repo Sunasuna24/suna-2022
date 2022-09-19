@@ -51,7 +51,7 @@ jobs:
               php artisan config:cache"
 
 workflows:
-  version: 3
+  version: 2
   build_deploy:
     jobs:
       - build

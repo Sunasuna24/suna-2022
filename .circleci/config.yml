@@ -2,7 +2,7 @@ version: 3
 jobs:
   build:
     docker:
-      - image: cimg/php::8.0.20
+      - image: cimg/php:8.0.20
     steps:
       - checkout
       - run: sudo composer self-update --1

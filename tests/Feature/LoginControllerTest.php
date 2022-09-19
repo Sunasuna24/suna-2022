@@ -6,11 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class VeryFirstTest extends TestCase
+class LoginControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
-    public function very_first_test()
+    function ログイン画面が表示される()
     {
-        $this->get('/')->assertOk();
+        $this->get(route('login'))->assertOk();
     }
 }

@@ -12,6 +12,12 @@
     </header>
     <main>
         <form action="{{ route('register') }}" method="post">
+            @if ($errors)
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
+            @endif
+            @csrf
             <div>
                 <label for="username">ユーザー名</label>
                 <input type="text" name="username" id="username">

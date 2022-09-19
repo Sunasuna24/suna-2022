@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('/register', [RegisterConteroller::class, 'index'])->name('register');
+Route::post('/register', [RegisterConteroller::class, 'register']);

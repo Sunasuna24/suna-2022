@@ -18,4 +18,10 @@ class RegisterControllerTest extends TestCase
             ->assertViewIs('auth.register')
             ->assertSee('会員登録');
     }
+
+    /** @test */
+    function フォームに不備があったら元の画面にリダイレクトされる()
+    {
+        $this->from(route('register'))->post(route('register'), [])->assertRedirect(route('register'));
+    }
 }

@@ -36,6 +36,16 @@ class LoginControllerTest extends TestCase
     }
 
     /** @test */
+    function 既にログインしているユーザーはアクセスを禁止する()
+    {
+        User::factory()->create();
+        $user = User::first();
+
+        $this->actingAs($user)->get(route('login'))->assertRedirect(route('home'));
+        $this->actingAs($user)->post(route('login'), [])->assertRedirect(route('home'));
+    }
+
+    /** @test */
     function 誤った認証情報で元の画面にリダイレクトされる()
     {
         User::factory()->create(['password' => Hash::make('password')]);

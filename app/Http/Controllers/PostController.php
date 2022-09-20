@@ -34,6 +34,6 @@ class PostController extends Controller
 
     public function show(Post $post):View
     {
-        return view('detail');
+        return view('detail', compact('post'));
     }
 }

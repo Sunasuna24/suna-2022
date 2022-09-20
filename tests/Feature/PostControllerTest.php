@@ -87,4 +87,21 @@ class PostControllerTest extends TestCase
         $response->assertRedirect(route('post.show', $post->id));
         $this->assertDatabaseHas('posts', $validPostData);
     }
+
+    /** @test */
+    function 内容と一緒に詳細画面が表示される()
+    {
+        $post = Post::factory()->create();
+
+        $this->get(route('post.show', $post->id))->assertRedirect(route('login'));
+
+        User::factory()->create();
+        $user = User::first();
+
+        $this->actingAs($user)->get(route('post.show', $post->id))
+            ->assertOk()
+            ->assertViewIs('detail')
+            ->assertSee($post->title)
+            ->assertSee($post->body);
+    }
 }

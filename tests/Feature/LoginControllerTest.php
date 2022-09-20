@@ -18,6 +18,13 @@ class LoginControllerTest extends TestCase
     }
 
     /** @test */
+    function データに不備があったらフラッシュが表示される()
+    {
+        $this->post(route('login'), ['email' => null])->assertInvalid(['email' => '必ず指定']);
+        $this->post(route('login'), ['password' => null])->assertInvalid(['password' => '必ず指定']);
+    }
+
+    /** @test */
     function ログアウトボタンを押すとWebサイトからログアウトする()
     {
         User::factory()->create();

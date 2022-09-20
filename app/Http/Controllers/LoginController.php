@@ -13,6 +13,14 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required'],
+            'password' => ['required']
+        ]);
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

@@ -44,4 +44,10 @@ class HomeControllerTest extends TestCase
             ->assertDontSee($draft_post2->title)
             ->assertDontSee($draft_post2->body);
     }
+
+    /** @test */
+    function ゲストは「自分の記事リンク」へアクセスできない()
+    {
+        $this->get(route('mypost'))->assertRedirect(route('login'));
+    }
 }

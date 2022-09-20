@@ -33,4 +33,8 @@ Route::middleware('auth')->group(function() {
     Route::post('/post', [PostController::class, 'create']);
 
     Route::get('/posts/{id}', [PostController::class, 'show'])->whereNumber('id')->name('post.show');
+
+    Route::get('/mypost', function () {
+        return true;
+    })->name('mypost');
 });

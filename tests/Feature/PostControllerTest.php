@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -46,6 +47,18 @@ class PostControllerTest extends TestCase
     /** @test */
     function 実際に記事が保存される()
     {
-        //
+        User::factory()->create();
+        $user = User::first();
+        $validPostData = [
+            'user_id' => $user->id,
+            'title' => 'TestTitle',
+            'body' => 'This is a sample post for testing this application.',
+            'status' => '1'
+        ];
+
+        $this->actingAs($user)->post(route('post.create'), $validPostData);
+
+        $post = Post::first();
+        $this->assertModelExists($post);
     }
 }

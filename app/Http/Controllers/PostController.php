@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -18,6 +20,13 @@ class PostController extends Controller
             'title' => ['required', 'max:255'],
             'body' => ['required'],
             'status' => ['numeric', 'between:0,1']
+        ]);
+
+        Post::create([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'body' => $request->body,
+            'status' => boolval($request->status)
         ]);
     }
 }

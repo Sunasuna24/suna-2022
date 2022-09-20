@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterConteroller;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/register', [RegisterConteroller::class, 'index'])->name('register');
 Route::post('/register', [RegisterConteroller::class, 'register']);

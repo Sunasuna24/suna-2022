@@ -87,4 +87,17 @@ class RegisterControllerTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
     }
+
+    /** @test */
+    function 会員登録が完了したらhome画面にリダイレクトする()
+    {
+        $validUserData = [
+            'username' => 'tesingUser',
+            'email' => 'testingUser@email.com',
+            'password' => 'password',
+            'password_confirmation' => 'password'
+        ];
+
+        $this->post(route('register'), $validUserData)->assertRedirect(route('home'));
+    }
 }

@@ -15,7 +15,7 @@ class RegisterConteroller extends Controller
         return view('auth.register');
     }
 
-    public function register(Request $request): View
+    public function register(Request $request)
     {
         $request->validate([
             'username' => ['required', 'min:8'],
@@ -36,6 +36,6 @@ class RegisterConteroller extends Controller
         Auth::attempt($credentials);
         $request->session()->regenerate();
 
-        return redirect('/');
+        return redirect()->route('home');
     }
 }

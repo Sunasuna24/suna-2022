@@ -9,6 +9,9 @@
 <body>
     <header>
         <h1>投稿サイト</h1>
+        <ul>
+            <li><form action="{{ route('logout') }}" method="post">@csrf<input type="submit" value="ログアウトする"></form></li>
+        </ul>
     </header>
     <main>
         <p>ホーム画面です。</p>

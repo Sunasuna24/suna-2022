@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterConteroller;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/login', function () {
+    return true;
+})->name('login');
 
 Route::middleware('guest')->group(function() {
     Route::get('/', function () {return view('top');})->name('top');
     Route::get('/register', [RegisterConteroller::class, 'index'])->name('register');
     Route::post('/register', [RegisterConteroller::class, 'register']);
+});
+
+Route::middleware('auth')->group(function() {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

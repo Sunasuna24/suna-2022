@@ -13,6 +13,9 @@
     <main>
         <form action="{{ route('login') }}" method="post">
             @csrf
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
             <div>
                 <label for="email">メールアドレス</label>
                 <input type="email" name="email" id="email">

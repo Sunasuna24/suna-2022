@@ -12,6 +12,12 @@ class LoginControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    function リンクをクリックするとログイン画面が表示される()
+    {
+        $this->get(route('login'))->assertOk()->assertViewIs('auth.login');
+    }
+
+    /** @test */
     function ログアウトボタンを押すとWebサイトからログアウトする()
     {
         User::factory()->create();

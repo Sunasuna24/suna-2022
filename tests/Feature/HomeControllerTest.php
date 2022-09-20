@@ -24,11 +24,24 @@ class HomeControllerTest extends TestCase
         $this->actingAs($user)->get(route('home'))
             ->assertOk()
             ->assertViewIs('home')
-            ->assertSee($post1->title)
-            ->assertSee($post1->body)
-            ->assertSee($post2->title)
-            ->assertSee($post2->body)
-            ->assertSee($post3->title)
-            ->assertSee($post3->body);
+            ->assertSeeInOrder([$post1->title, $post1->body, $post2->title, $post2->body, $post3->title, $post3->body]);
+    }
+
+    /** @test */
+    function 非公開の投稿は表示しない()
+    {
+        [$published_post1, $published_post2] = Post::factory(2)->create();
+        [$draft_post1, $draft_post2] = Post::factory(2)->draft()->create();
+
+        User::factory()->create();
+        $user = User::first();
+        $this->actingAs($user)->get(route('home'))
+            ->assertOk()
+            ->assertViewIs('home')
+            ->assertSeeInOrder([$published_post1->title, $published_post1->body, $published_post2->title, $published_post2->body])
+            ->assertDontSee($draft_post1->title)
+            ->assertDontSee($draft_post1->body)
+            ->assertDontSee($draft_post2->title)
+            ->assertDontSee($draft_post2->body);
     }
 }

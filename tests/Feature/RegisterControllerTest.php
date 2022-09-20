@@ -83,7 +83,6 @@ class RegisterControllerTest extends TestCase
         ];
         $this->post(route('register'), $validUserData);
 
-        // $user = User::find(1);
         $user = User::where('email', $validUserData['email'])->first();
 
         $this->assertAuthenticatedAs($user);

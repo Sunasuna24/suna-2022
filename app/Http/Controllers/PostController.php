@@ -17,7 +17,7 @@ class PostController extends Controller
         $request->validate([
             'title' => ['required', 'max:255'],
             'body' => ['required'],
-            'status' => []
+            'status' => ['numeric', 'between:0,1']
         ]);
     }
 }

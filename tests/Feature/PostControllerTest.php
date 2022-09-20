@@ -35,6 +35,12 @@ class PostControllerTest extends TestCase
 
         // 本文周り
         $this->actingAs($user)->post(route('post.create'), ['body' => null])->assertInvalid(['body' => '必ず指定']);
+
+        // ステータス周り
+        $this->actingAs($user)->post(route('post.create'), ['status' => 'Hello, world!'])->assertInvalid(['status' => '数字を指定']);
+        $this->actingAs($user)->post(route('post.create'), ['status' => '4'])->assertInvalid(['status' => 'の間で指定']);
+        $this->actingAs($user)->post(route('post.create'), ['status' => '1'])->assertValid(['status']);
+        $this->actingAs($user)->post(route('post.create'), ['status' => 0])->assertValid(['status']);
     }
 
     /** @test */

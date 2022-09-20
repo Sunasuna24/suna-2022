@@ -11,7 +11,6 @@ class RootTest extends TestCase
     /** @test */
     function rootにアクセスするとTOP画面が表示される()
     {
-        // $this->get(route('top'))->assertViewIs('top');
-        $this->get('/')->assertOk();
+        $this->get(route('top'))->assertViewIs('top');
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterConteroller;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,5 @@ Route::middleware('auth')->group(function() {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('/post', function () {
-        return true;
-    })->name('post.create');
+    Route::get('/post', [PostController::class, 'index'])->name('post.create');
 });

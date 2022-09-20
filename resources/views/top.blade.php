@@ -1,7 +1,7 @@
 @extends('Layouts.app')
 
-@section('title', '投稿サイトへようこそ')
+@section('title', '投稿アプリへようこそ')
 
 @section('content')
-<p>ようこそ、投稿サイトへ</p>
+<p>ようこそ、投稿アプリへ</p>
 @endsection

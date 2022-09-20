@@ -39,6 +39,10 @@ class PostController extends Controller
 
     public function edit(Post $post, Request $request)
     {
+        if ($post->user->id !== Auth::id()) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => ['required', 'max:255'],
             'body' => ['required'],

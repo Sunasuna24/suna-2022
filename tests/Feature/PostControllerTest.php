@@ -160,4 +160,13 @@ class PostControllerTest extends TestCase
         $this->actingAs($user)->post(route('post.show', $post->id), $following_content)->assertRedirect(route('post.show', $post->id));
         $this->assertDatabaseMissing('posts', $previous_content)->assertDatabaseHas('posts', $following_content);
     }
+
+    /** @test */
+    function z他人の記事は編集できない()
+    {
+        [$me, $other] = User::factory(2)->create();
+        $other_post = Post::factory()->create(['user_id' => $other->id]);
+
+        $this->actingAs($me)->post(route('post.show', $other_post->id), [])->assertForbidden();
+    }
 }

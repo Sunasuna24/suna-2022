@@ -9,14 +9,14 @@
     <p>{{ $error }}</p>
     @endforeach
     <div>
-        <input type="text" name="title" value="{{ old('title', $post->title) }}"> - <span>{{ $post->user->name }}</span>
+        <input type="text" name="title" value="{{ old('title', $post->title) }}" {{ $post->user_id !== \Auth::id() ? 'readonly' : '' }}> - <span>{{ $post->user->name }}</span>
     </div>
     <div>
-        <textarea name="body" cols="30" rows="10">{{ old('body', $post->body)  }}</textarea>
+        <textarea name="body" cols="30" rows="10" {{ $post->user_id !== \Auth::id() ? 'readonly' : '' }}>{{ old('body', $post->body)  }}</textarea>
     </div>
     <div>
-        <input type="checkbox" name="status" id="status" {{ $post->status ? 'checked' : '' }}><label for="status">公開する</label>
+        <input type="checkbox" name="status" id="status" {{ $post->status ? 'checked' : '' }} {{ $post->user_id !== \Auth::id() ? 'disabled' : '' }}><label for="status">公開する</label>
     </div>
-    <button type="submit">送信する</button>
+    <button type="submit" {{ $post->user_id !== \Auth::id() ? 'disabled' : '' }}>送信する</button>
 </form>
 @endsection

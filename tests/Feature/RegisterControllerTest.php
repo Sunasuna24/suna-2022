@@ -16,7 +16,7 @@ class RegisterControllerTest extends TestCase
     {
         $this->get(route('register'))
             ->assertOk()
-            ->assertViewIs('auth.register')
+            ->assertViewIs('Auth.register')
             ->assertSee('会員登録');
     }
 

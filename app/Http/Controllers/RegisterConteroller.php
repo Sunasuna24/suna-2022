@@ -12,7 +12,7 @@ class RegisterConteroller extends Controller
 {
     public function index(): View
     {
-        return view('auth.register');
+        return view('Auth.register');
     }
 
     public function register(Request $request)

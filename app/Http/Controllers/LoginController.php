@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function index():View
     {
-        return view('auth.login');
+        return view('Auth.login');
     }
 
     public function login(Request $request)

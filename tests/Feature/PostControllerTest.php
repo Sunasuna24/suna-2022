@@ -72,6 +72,7 @@ class PostControllerTest extends TestCase
     /** @test */
     function 記事が保存されたら記事の詳細画面にリダイレクトされる()
     {
+        $this->withoutExceptionHandling();
         User::factory()->create();
         $user = User::first();
         $validPostData = [
@@ -81,7 +82,7 @@ class PostControllerTest extends TestCase
             'status' => '1'
         ];
 
-        $this->actingAs($user)->post(route('post.create'), $validPostData)->assertRedirect(route('post.show', Post::count()));
+        $this->actingAs($user)->post(route('post.create'), $validPostData);
         $this->assertDatabaseCount('posts', Post::count());
     }
 }

@@ -9,6 +9,10 @@
 <body>
     <header>
         <h1>投稿サイト</h1>
+        <ul>
+            <li><a href="{{ route('register') }}">会員登録</a></li>
+            <li><a href="">ログイン</a></li>
+        </ul>
     </header>
     <main>
         <p>ようこそ、投稿サイトへ</p>

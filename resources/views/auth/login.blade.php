@@ -8,10 +8,21 @@
 </head>
 <body>
     <header>
-        <h1>投稿アプリ</h1>
+        <h1>ログインする</h1>
     </header>
     <main>
-        <p>これはログイン画面です。</p>
+        <form action="{{ route('login') }}" method="post">
+            @csrf
+            <div>
+                <label for="email">メールアドレス</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div>
+                <label for="password">パスワード</label>
+                <input type="password" name="password" id="password">
+            </div>
+            <button type="submit">送信する</button>
+        </form>
     </main>
     <footer>
         <span>&copy;Tomoyasu Sunagawa 2022.</span>

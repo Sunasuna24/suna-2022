@@ -104,7 +104,8 @@ class RegisterControllerTest extends TestCase
     /** @test */
     function 会員登録画面の表示と会員登録処理はユーザーがguest以外は禁止する()
     {
-        $user = User::factory()->create();
+        User::factory()->create();
+        $user = User::first();
         $this->actingAs($user)->get(route('register'))->assertRedirect(route('home'));
         $this->actingAs($user)->post(route('register'), [])->assertRedirect(route('home'));
     }

@@ -44,4 +44,27 @@ class HomeControllerTest extends TestCase
             ->assertDontSee($draft_post2->title)
             ->assertDontSee($draft_post2->body);
     }
+
+    /** @test */
+    function ゲストは「自分の記事リンク」へアクセスできない()
+    {
+        $this->get(route('mypost'))->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    function 「自分の記事リンク」を押すと、自分の記事一覧が見れる()
+    {
+        [$me, $other] = User::factory(2)->create();
+
+        $my_post = Post::factory()->create(['user_id' => $me->id]);
+        $other_post = Post::factory()->create(['user_id' => $other->id]);
+
+        $this->actingAs($me)->get(route('mypost'))
+            ->assertOk()
+            ->assertViewIs('mypost')
+            ->assertSee($my_post->title)
+            ->assertSee($my_post->body)
+            ->assertDontSee($other_post->title)
+            ->assertDontSee($other_post->body);
+    }
 }

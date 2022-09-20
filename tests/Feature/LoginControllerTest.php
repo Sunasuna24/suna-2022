@@ -20,4 +20,10 @@ class LoginControllerTest extends TestCase
         $this->actingAs($user)->post(route('logout'), [])->assertRedirect(route('top'));
         $this->assertGuest();
     }
+
+    /** @test */
+    function ゲストのアクセスを禁止する()
+    {
+        $this->post(route('logout'), [])->assertRedirect(route('login'));
+    }
 }

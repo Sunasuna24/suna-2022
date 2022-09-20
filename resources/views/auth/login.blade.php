@@ -8,11 +8,12 @@
 </head>
 <body>
     <header>
-        <h1>ログインする</h1>
+        <h1><a href="{{ route('top') }}">投稿サイト</a></h1>
     </header>
     <main>
         <form action="{{ route('login') }}" method="post">
             @csrf
+            <h2>ログイン</h2>
             @foreach ($errors->all() as $error)
             <p>{{ $error }}</p>
             @endforeach

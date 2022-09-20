@@ -8,16 +8,17 @@
 </head>
 <body>
     <header>
-        <h1>投稿サイト</h1>
+        <h1><a href="{{ route('top') }}">投稿サイト</a></h1>
     </header>
     <main>
         <form action="{{ route('register') }}" method="post">
+            @csrf
+            <h2>会員登録</h2>
             @if ($errors)
             @foreach ($errors->all() as $error)
             <p>{{ $error }}</p>
             @endforeach
             @endif
-            @csrf
             <div>
                 <label for="username">ユーザー名</label>
                 <input type="text" name="username" id="username">

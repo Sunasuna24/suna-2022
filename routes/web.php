@@ -32,7 +32,8 @@ Route::middleware('auth')->group(function() {
     Route::get('/post', [PostController::class, 'index'])->name('post.create');
     Route::post('/post', [PostController::class, 'create']);
 
-    Route::get('/posts/{id}', [PostController::class, 'show'])->whereNumber('id')->name('post.show');
+    Route::get('/posts/{post}', [PostController::class, 'show'])->whereNumber('post')->name('post.show');
+    Route::post('/posts/{post}', [PostController::class, 'edit'])->whereNumber('post');
 
     Route::get('/mypost', [HomeController::class, 'mypost'])->name('mypost');
 });

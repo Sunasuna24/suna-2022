@@ -87,4 +87,87 @@ class PostControllerTest extends TestCase
         $response->assertRedirect(route('post.show', $post->id));
         $this->assertDatabaseHas('posts', $validPostData);
     }
+
+    /** @test */
+    function 内容と一緒に詳細画面が表示される()
+    {
+        $post = Post::factory()->create();
+
+        $this->get(route('post.show', $post->id))->assertRedirect(route('login'));
+
+        User::factory()->create();
+        $user = User::first();
+
+        $this->actingAs($user)->get(route('post.show', $post->id))
+            ->assertOk()
+            ->assertViewIs('detail')
+            ->assertSee($post->title)
+            ->assertSee($post->body);
+    }
+
+    /** @test */
+    function バリデーション()
+    {
+        User::factory()->create();
+        $user = User::first();
+        $post = Post::factory()->create(['user_id' => $user->id]);
+
+        // タイトル周り
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => null])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('必ず指定');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => null, 'body' => 'Dummy body!'])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('必ず指定')->assertSee('Dummy body!');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => str_repeat('a', 256)])->assertInvalid(['title' => '文字以下で指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('文字以下で指定')->assertSee(str_repeat('a', 256));
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => str_repeat('a', 255)])->assertValid(['title']);
+
+        // 本文周り
+        $this->actingAs($user)->post(route('post.show', $post->id), ['body' => null])->assertInvalid(['body' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('必ず指定');
+
+        // ステータス周り
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => 'Hello, world!'])->assertInvalid(['status' => '数字を指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('数字を指定');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => '4'])->assertInvalid(['status' => 'の間で指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('の間で指定');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => '1'])->assertValid(['status']);
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => 0])->assertValid(['status']);
+    }
+
+    /** @test */
+    function 自分の記事を編集する()
+    {
+        User::factory()->create();
+        $user = User::first();
+
+        $previous_content = [
+            'user_id' => $user->id,
+            'title' => 'Previous Title',
+            'body' => 'This is previous post. It will be changed afterwars.',
+            'status' => '1'
+        ];
+        $post = Post::factory()->create($previous_content);
+
+        $following_content = [
+            'user_id' => $user->id,
+            'title' => 'Following Title',
+            'body' => 'This is the following post. It is already changed.',
+            'status' => '0'
+        ];
+
+        $this->post(route('post.show', $post->id), $following_content)->assertRedirect(route('login'));
+
+        $this->actingAs($user)->post(route('post.show', $post->id), $following_content)->assertRedirect(route('post.show', $post->id));
+        $this->get(route('post.show', $post->id))->assertSee('記事を更新しました。');
+        $this->assertDatabaseMissing('posts', $previous_content)->assertDatabaseHas('posts', $following_content);
+    }
+
+    /** @test */
+    function 他人の記事は編集できない()
+    {
+        [$me, $other] = User::factory(2)->create();
+        $other_post = Post::factory()->create(['user_id' => $other->id]);
+
+        $this->actingAs($me)->post(route('post.show', $other_post->id), [])->assertForbidden();
+    }
 }

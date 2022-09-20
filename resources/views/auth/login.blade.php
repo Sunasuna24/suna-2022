@@ -16,9 +16,12 @@
             @foreach ($errors->all() as $error)
             <p>{{ $error }}</p>
             @endforeach
+            @if (session('error_status'))
+            <p>{{ session('error_status') }}</p>
+            @endif
             <div>
                 <label for="email">メールアドレス</label>
-                <input type="email" name="email" id="email">
+                <input type="email" name="email" id="email" value="{{ old('email') }}">
             </div>
             <div>
                 <label for="password">パスワード</label>

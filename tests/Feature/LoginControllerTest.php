@@ -36,6 +36,16 @@ class LoginControllerTest extends TestCase
     }
 
     /** @test */
+    function 誤った認証情報で元の画面にリダイレクトされる()
+    {
+        User::factory()->create(['password' => Hash::make('password')]);
+        $user = User::first();
+
+        $this->from(route('login'))->post(route('login'), ['email' => $user->email, 'password' => 'otherText'])->assertRedirect(route('login'));
+        $this->get(route('login'))->assertSee('認証情報が正しくありません。')->assertSee($user->email);
+    }
+
+    /** @test */
     function ログアウトボタンを押すとWebサイトからログアウトする()
     {
         User::factory()->create();

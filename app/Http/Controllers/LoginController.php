@@ -21,6 +21,7 @@ class LoginController extends Controller
         ]);
 
         if (!Auth::attempt($credentials)) {
+            return back()->with('error_status', '認証情報が正しくありません。')->withInput();
         }
 
         $request->session()->regenerate();

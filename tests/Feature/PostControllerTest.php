@@ -104,4 +104,38 @@ class PostControllerTest extends TestCase
             ->assertSee($post->title)
             ->assertSee($post->body);
     }
+
+    /** @test */
+    function バリデーション()
+    {
+        //
+    }
+
+    /** @test */
+    function 自分の記事を編集する()
+    {
+        User::factory()->create();
+        $user = User::first();
+
+        $previous_content = [
+            'user_id' => $user->id,
+            'title' => 'Previous Title',
+            'body' => 'This is previous post. It will be changed afterwars.',
+            'status' => '1'
+        ];
+        $post = Post::factory()->create($previous_content);
+
+        $following_content = [
+            'user_id' => $user->id,
+            'title' => 'Following Title',
+            'body' => 'This is the following post. It is already changed.',
+            'status' => '0'
+        ];
+
+        $this->post(route('post.show', $post->id), $following_content)->assertRedirect(route('login'));
+
+        $this->actingAs($user)->post(route('post.show', $post->id), $following_content)->assertRedirect(route('post.show', $post->id));
+        $this->assertDatabaseMissing('posts', $previous_content)
+            ->assertDatabaseHas('posts', $following_content);
+    }
 }

@@ -12,7 +12,7 @@
         <textarea name="body" cols="30" rows="10" placeholder="こちらに本文">{{ $post->body }}</textarea>
     </div>
     <div>
-        <label for="status">公開する</label>：<input type="checkbox" name="status" id="status" {{ $post->status ? 'checked' : '' }}>
+        <input type="checkbox" name="status" id="status" {{ $post->status ? 'checked' : '' }}><label for="status">公開する</label>
     </div>
     <button type="submit">送信する</button>
 </form>

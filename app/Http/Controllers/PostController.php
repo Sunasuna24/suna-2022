@@ -36,4 +36,14 @@ class PostController extends Controller
     {
         return view('detail', compact('post'));
     }
+
+    public function edit(Post $post, Request $request)
+    {
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->status = boolval($request->status);
+        $post->save();
+
+        return redirect()->route('post.show', $post->id);
+    }
 }

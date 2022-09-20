@@ -3,7 +3,7 @@
 @section('title', '記事の詳細 | 投稿アプリ')
 
 @section('content')
-<form action="{{ route('posts') }}" method="post">
+<form action="{{ route('post.show', 1) }}" method="post">
     @csrf
     <div>
         <input type="text" name="title" placeholder="タイトル">

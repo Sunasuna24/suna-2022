@@ -22,11 +22,18 @@ class PostController extends Controller
             'status' => ['numeric', 'between:0,1']
         ]);
 
-        Post::create([
+        $post = Post::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'body' => $request->body,
             'status' => boolval($request->status)
         ]);
+
+        return redirect()->route('post.show', $post->id);
+    }
+
+    public function show(Post $post):View
+    {
+        return view('detail.blade.php');
     }
 }

@@ -61,4 +61,19 @@ class PostControllerTest extends TestCase
         $post = Post::first();
         $this->assertModelExists($post);
     }
+
+    /** @test */
+    function 記事が保存されたら記事の詳細画面にリダイレクトされる()
+    {
+        User::factory()->create();
+        $user = User::first();
+        $validPostData = [
+            'user_id' => $user->id,
+            'title' => 'TestTitle',
+            'body' => 'This is a sample post for testing this application.',
+            'status' => '1'
+        ];
+
+        $this->actingAs($user)->post(route('post.create'), $validPostData)->assertRedirect(route('post.show', 1));
+    }
 }

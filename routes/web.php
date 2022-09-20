@@ -21,5 +21,7 @@ Route::get('/', function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/register', [RegisterConteroller::class, 'index'])->middleware('guest')->name('register');
-Route::post('/register', [RegisterConteroller::class, 'register'])->middleware('guest');
+Route::middleware('guest')->group(function() {
+    Route::get('/register', [RegisterConteroller::class, 'index'])->name('register');
+    Route::post('/register', [RegisterConteroller::class, 'register']);
+});

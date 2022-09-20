@@ -82,7 +82,9 @@ class PostControllerTest extends TestCase
             'status' => '1'
         ];
 
-        $this->actingAs($user)->post(route('post.create'), $validPostData)->assertRedirect(route('post.show', Post::count()));
-        $this->assertDatabaseCount('posts', Post::count());
+        $response = $this->actingAs($user)->post(route('post.create'), $validPostData);
+        $post = Post::first();
+        $response->assertRedirect(route('post.show', $post->id));
+        $this->assertDatabaseHas('posts', $validPostData);
     }
 }

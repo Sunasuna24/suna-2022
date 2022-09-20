@@ -24,22 +24,29 @@ class PostControllerTest extends TestCase
     }
 
     /** @test */
-    function 不備があると元の画面に戻される()
+    function 不備があるとエラーメッセージが出力される()
     {
         User::factory()->create();
         $user = User::first();
 
         // タイトル周り
         $this->actingAs($user)->post(route('post.create'), ['title' => null])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.create'))->assertSee('必ず指定');
+        $this->actingAs($user)->post(route('post.create'), ['title' => null, 'body' => 'Dummy body!'])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.create'))->assertSee('必ず指定')->assertSee('Dummy body!');
         $this->actingAs($user)->post(route('post.create'), ['title' => str_repeat('a', 256)])->assertInvalid(['title' => '文字以下で指定']);
+        $this->actingAs($user)->get(route('post.create'))->assertSee('文字以下で指定')->assertSee(str_repeat('a', 256));
         $this->actingAs($user)->post(route('post.create'), ['title' => str_repeat('a', 255)])->assertValid(['title']);
 
         // 本文周り
         $this->actingAs($user)->post(route('post.create'), ['body' => null])->assertInvalid(['body' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.create'))->assertSee('必ず指定');
 
         // ステータス周り
         $this->actingAs($user)->post(route('post.create'), ['status' => 'Hello, world!'])->assertInvalid(['status' => '数字を指定']);
+        $this->actingAs($user)->get(route('post.create'))->assertSee('数字を指定');
         $this->actingAs($user)->post(route('post.create'), ['status' => '4'])->assertInvalid(['status' => 'の間で指定']);
+        $this->actingAs($user)->get(route('post.create'))->assertSee('の間で指定');
         $this->actingAs($user)->post(route('post.create'), ['status' => '1'])->assertValid(['status']);
         $this->actingAs($user)->post(route('post.create'), ['status' => 0])->assertValid(['status']);
     }

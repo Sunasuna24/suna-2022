@@ -162,7 +162,7 @@ class PostControllerTest extends TestCase
     }
 
     /** @test */
-    function z他人の記事は編集できない()
+    function 他人の記事は編集できない()
     {
         [$me, $other] = User::factory(2)->create();
         $other_post = Post::factory()->create(['user_id' => $other->id]);

@@ -21,7 +21,7 @@ class RootTest extends TestCase
     function 認証済みのユーザーはTOP画面にアクセスできない()
     {
         User::factory()->create();
-        $user = User::find(1);
+        $user = User::first();
         $this->actingAs($user)->get(route('top'))->assertRedirect(route('home'));
     }
 }

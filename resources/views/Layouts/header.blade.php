@@ -2,7 +2,7 @@
     @auth
     <h1><a href="{{ route('home') }}">投稿アプリ</a></h1>
     <ul>
-        <li><a href="">自分の記事</a></li>
+        <li><a href="{{ route('mypost') }}">自分の記事</a></li>
         <li><form action="{{ route('logout') }}" method="post">@csrf<input type="submit" value="ログアウトする"></form></li>
     </ul>
     @endauth

@@ -30,4 +30,5 @@ Route::middleware('auth')->group(function() {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/post', [PostController::class, 'index'])->name('post.create');
+    Route::post('/post', [PostController::class, 'create']);
 });

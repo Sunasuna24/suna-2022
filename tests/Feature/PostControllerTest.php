@@ -21,4 +21,25 @@ class PostControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('post.create'))->assertOk()->assertViewIs('post');
     }
+
+    /** @test */
+    function 不備があると元の画面に戻される()
+    {
+        User::factory()->create();
+        $user = User::first();
+
+        // タイトル周り
+        $this->actingAs($user)->post(route('post.create'), ['title' => null])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->post(route('post.create'), ['title' => str_repeat('a', 256)])->assertInvalid(['title' => '文字以下で指定']);
+        $this->actingAs($user)->post(route('post.create'), ['title' => str_repeat('a', 255)])->assertValid(['title']);
+
+        // 本文周り
+        $this->actingAs($user)->post(route('post.create'), ['body' => null])->assertInvalid(['body' => '必ず指定']);
+    }
+
+    /** @test */
+    function 実際に記事が保存される()
+    {
+        //
+    }
 }

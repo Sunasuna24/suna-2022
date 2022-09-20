@@ -11,4 +11,13 @@ class PostController extends Controller
     {
         return view('post');
     }
+
+    public function create(Request $request)
+    {
+        $request->validate([
+            'title' => ['required', 'max:255'],
+            'body' => ['required'],
+            'status' => []
+        ]);
+    }
 }

@@ -22,18 +22,14 @@ class RegisterConteroller extends Controller
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8', 'confirmed']
         ]);
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
 
-        User::create([
+        $user = User::create([
             'name' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
 
-        Auth::attempt($credentials);
+        Auth::login($user);
         $request->session()->regenerate();
 
         return redirect()->route('home');

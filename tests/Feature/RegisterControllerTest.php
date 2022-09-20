@@ -71,4 +71,20 @@ class RegisterControllerTest extends TestCase
         $users = User::where('email', $validUserData['email'])->get();
         $this->assertTrue(count($users) === 1);
     }
+
+    /** @test */
+    function 登録したユーザーでそのままログインされる()
+    {
+        $validUserData = [
+            'username' => 'tesingUser',
+            'email' => 'testingUser@email.com',
+            'password' => 'password',
+            'password_confirmation' => 'password'
+        ];
+        $this->post(route('register'), $validUserData);
+
+        $user = User::find(1);
+
+        $this->assertAuthenticatedAs($user);
+    }
 }

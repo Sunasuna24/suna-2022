@@ -158,6 +158,7 @@ class PostControllerTest extends TestCase
         $this->post(route('post.show', $post->id), $following_content)->assertRedirect(route('login'));
 
         $this->actingAs($user)->post(route('post.show', $post->id), $following_content)->assertRedirect(route('post.show', $post->id));
+        $this->get(route('post.show', $post->id))->assertSee('記事を更新しました。');
         $this->assertDatabaseMissing('posts', $previous_content)->assertDatabaseHas('posts', $following_content);
     }
 

@@ -54,6 +54,6 @@ class PostController extends Controller
         $post->status = boolval($request->status);
         $post->save();
 
-        return redirect()->route('post.show', $post->id);
+        return redirect()->route('post.show', $post->id)->with('success_status', '記事を更新しました。');
     }
 }

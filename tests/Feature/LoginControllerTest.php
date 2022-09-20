@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
@@ -22,6 +23,16 @@ class LoginControllerTest extends TestCase
     {
         $this->post(route('login'), ['email' => null])->assertInvalid(['email' => '必ず指定']);
         $this->post(route('login'), ['password' => null])->assertInvalid(['password' => '必ず指定']);
+    }
+
+    /** @test */
+    function 正常にログインされる()
+    {
+        User::factory()->create(['password' => Hash::make('password')]);
+        $user = User::first();
+
+        $this->post(route('login'), ['email' => $user->email, 'password' => 'password'])->assertRedirect(route('home'));
+        $this->assertAuthenticatedAs($user);
     }
 
     /** @test */

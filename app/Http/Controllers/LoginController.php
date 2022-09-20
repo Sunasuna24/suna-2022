@@ -19,6 +19,13 @@ class LoginController extends Controller
             'email' => ['required'],
             'password' => ['required']
         ]);
+
+        if (!Auth::attempt($credentials)) {
+        }
+
+        $request->session()->regenerate();
+        return redirect()->route('home');
+
     }
 
     public function logout(Request $request)

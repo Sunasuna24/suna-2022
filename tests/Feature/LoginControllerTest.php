@@ -15,7 +15,7 @@ class LoginControllerTest extends TestCase
     /** @test */
     function リンクをクリックするとログイン画面が表示される()
     {
-        $this->get(route('login'))->assertOk()->assertViewIs('auth.login');
+        $this->get(route('login'))->assertOk()->assertViewIs('Auth.login');
     }
 
     /** @test */

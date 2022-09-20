@@ -48,5 +48,27 @@ class RegisterControllerTest extends TestCase
             ->assertInvalid(['password' => '8文字以上']);
         $this->from(route('register'))->post(route('register'), ['password' => 'password', 'password_confirmation' => 'password1'])
             ->assertInvalid(['password' => '一致']);
+        $this->from(route('register'))->post(route('register'), ['password' => 'validPassword', 'password_confirmation' => 'validPassword'])
+            ->assertValid('password');
+    }
+
+    /** @test */
+    function 正常にDBに登録される()
+    {
+        $validUserData = [
+            'username' => 'tesingUser',
+            'email' => 'testingUser@email.com',
+            'password' => 'password',
+            'password_confirmation' => 'password'
+        ];
+        $this->post(route('register'), $validUserData);
+
+        $this->assertDatabaseHas('users', [
+            'name' => $validUserData['username'],
+            'email' => $validUserData['email']
+        ]);
+
+        $users = User::where('email', $validUserData['email'])->get();
+        $this->assertTrue(count($users) === 1);
     }
 }

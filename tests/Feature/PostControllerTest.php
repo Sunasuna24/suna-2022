@@ -108,7 +108,30 @@ class PostControllerTest extends TestCase
     /** @test */
     function バリデーション()
     {
-        //
+        User::factory()->create();
+        $user = User::first();
+        $post = Post::factory()->create(['user_id' => $user->id]);
+
+        // タイトル周り
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => null])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('必ず指定');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => null, 'body' => 'Dummy body!'])->assertInvalid(['title' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('必ず指定')->assertSee('Dummy body!');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => str_repeat('a', 256)])->assertInvalid(['title' => '文字以下で指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('文字以下で指定')->assertSee(str_repeat('a', 256));
+        $this->actingAs($user)->post(route('post.show', $post->id), ['title' => str_repeat('a', 255)])->assertValid(['title']);
+
+        // 本文周り
+        $this->actingAs($user)->post(route('post.show', $post->id), ['body' => null])->assertInvalid(['body' => '必ず指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('必ず指定');
+
+        // ステータス周り
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => 'Hello, world!'])->assertInvalid(['status' => '数字を指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('数字を指定');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => '4'])->assertInvalid(['status' => 'の間で指定']);
+        $this->actingAs($user)->get(route('post.show', $post->id))->assertSee('の間で指定');
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => '1'])->assertValid(['status']);
+        $this->actingAs($user)->post(route('post.show', $post->id), ['status' => 0])->assertValid(['status']);
     }
 
     /** @test */
@@ -135,7 +158,6 @@ class PostControllerTest extends TestCase
         $this->post(route('post.show', $post->id), $following_content)->assertRedirect(route('login'));
 
         $this->actingAs($user)->post(route('post.show', $post->id), $following_content)->assertRedirect(route('post.show', $post->id));
-        $this->assertDatabaseMissing('posts', $previous_content)
-            ->assertDatabaseHas('posts', $following_content);
+        $this->assertDatabaseMissing('posts', $previous_content)->assertDatabaseHas('posts', $following_content);
     }
 }

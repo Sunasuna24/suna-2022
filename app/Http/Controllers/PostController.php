@@ -39,6 +39,12 @@ class PostController extends Controller
 
     public function edit(Post $post, Request $request)
     {
+        $request->validate([
+            'title' => ['required', 'max:255'],
+            'body' => ['required'],
+            'status' => ['numeric', 'between:0,1'],
+        ]);
+
         $post->title = $request->title;
         $post->body = $request->body;
         $post->status = boolval($request->status);

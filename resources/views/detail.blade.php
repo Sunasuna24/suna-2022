@@ -5,11 +5,14 @@
 @section('content')
 <form action="{{ route('post.show', $post->id) }}" method="post">
     @csrf
+    @foreach ($errors->all() as $error)
+    <p>{{ $error }}</p>
+    @endforeach
     <div>
-        <input type="text" name="title" placeholder="タイトル" value="{{ $post->title }}"> - <span>{{ $post->user->name }}</span>
+        <input type="text" name="title" value="{{ old('title', $post->title) }}"> - <span>{{ $post->user->name }}</span>
     </div>
     <div>
-        <textarea name="body" cols="30" rows="10" placeholder="こちらに本文">{{ $post->body }}</textarea>
+        <textarea name="body" cols="30" rows="10">{{ old('body', $post->body)  }}</textarea>
     </div>
     <div>
         <input type="checkbox" name="status" id="status" {{ $post->status ? 'checked' : '' }}><label for="status">公開する</label>
